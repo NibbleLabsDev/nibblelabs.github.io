@@ -1,0 +1,43 @@
+---
+title: "Milliseconds, Not Hours"
+description: "Why understanding the purpose behind testing matters more than mandates, and what fast feedback loops actually enable."
+pubDate: 2026-01-24T14:30:00
+---
+
+When I was a junior almost a decade ago, I remember working on bugs like this dozens of times, and I still do some today. A bug report comes in. You spend hours tracing through code files that are tens of thousands of lines each, hunting for where the problem might live. Finally, with only the roughest idea of a fix, you change some code. Now you wait 30 minutes for the project to compile. The bug is gone. Except now we've created a new bug in a completely unrelated feature. Back to guessing. Each guess is another 30 minutes to find out if you're even close. Is this really the only way to do this?
+
+## The ripple effect
+
+You finally ship that fix, but there was another bug you didn't notice at first. It was so frustrating that something unrelated broke on your first experiment, but who would have guessed there was a second unrelated system you accidentally modified? Obviously, because you didn't know about it, you couldn't tell QA to test it and QA knows even less about the code base than developers do, so what hope did they have to know about it? This happens all the time; companies reward developers that ship quickly, but no one keeps any record when that quick fix blocks a customer workflow 6 months later, and now they're threatening SLA penalties, churn or even litigation.
+
+## The books I ignored
+
+A coworker of mine used to leave books on the tables in our break rooms. I can't remember now if it was *The Art of Unit Testing* by Roy Osherove or *Unit Testing* by Vladimir Khorikov. I ignored those books, and never once picked them up. As a junior, I had too much pride to admit I didn't know how to write unit tests. Another part of me was afraid to try something and fail. I unconsciously thought to myself if anyone sees me make a mistake they'll know I'm an imposter or that I don't actually know how to do this.
+
+Something finally pushed me to try; I couldn't tell you what. What I do remember is the first time I ever realized that I could create a new, separate class that entirely fixes a bug and surround that new class with several test cases. Test cases to make sure the new class does exactly what the old code did and a new test case to ensure the bug itself is fixed. Wait, are you telling me I can have confidence in my code in milliseconds, not hours? Why isn't everyone already doing this?
+
+## The test that wasn't broken
+
+Fast forward several years, and now I've convinced enough people on my team that we should add test validation as a pre-requirement for each pull request in a small separate code repository. Most of us still treat automated tests as untrustworthy. Oh, that test failed? Just run it again, it might work. Or, that test always fails, we can just ignore test cases 1, 7, 35, 121, etc.
+
+Not this code repository, I've personally taken great lengths to ensure these tests are trustworthy. If they pass, the code is safe to ship to QA. If the tests fail, it's a real bug and automatically denies the pull request. Old habits die hard though. Another developer on my team wants to merge changes into main and they have a test failure. They ask me if we can jump on a call and fix the test because it's obviously broken. I even believed them. Imagine my surprise when not even 5 minutes into the call we both realize the test failure was real. They incorrectly copied and pasted SQL from their SSMS into the application. The test showed a real SQL syntax error. Would you believe me if I said I've been on those same 5 minute calls more than once and with more than one developer?
+
+## Thinking at the wrong level
+
+Last year I realized I'd been thinking about this at the wrong level. It's not automated tests or good architecture themselves that fix all these problems. It's what these things enable at an organizational level. If an entire organization would optimize their architecture and software delivery for true speed and stability instead of cost, there are so many benefits for the organization and its workers. Higher profitability, market share, productivity, employee satisfaction, lower rates of employee burnout, and employees who are more likely to recommend their organization as a place to work.
+
+When I say optimize for cost, what I have experienced in my organization is we want to ship things fast. What we really end up doing is pressuring our developers into creating a feature with the absolute minimum amount of work possible because we have to ship so many competing priorities at the same time. Ironically, this actually ends up being more costly because shipping software fast that breaks in production is expensive.
+
+So what does this really look like in practice? It turns out that if you have a software engineer that can fix a bug in a modular piece of code that is covered with layered tests, the developer can experiment on the fix much faster, have much higher confidence in the fix, and feel safer making the change because modularity means reduced scope. Higher test coverage means QA shoulders less of the verification burden. QA can approve items faster, which can open the door to shipping to our customers faster. Once we start adding tests to our merge pipelines, organizations can start thinking about how to ship their code to customers faster. Compare this to multi-week or multi-month integration processes that ultimately result in slow market testing or slow resolutions for customers.
+
+## What's really in the way
+
+Why doesn't everyone do this? Why am I not more confident to champion this in my organization? Sometimes I wonder if all these DevOps principles are just marketing attempts to get us to pay more for the cloud infrastructure we'd need to run the reported billions of tests per year by Google. Other times I feel these kinds of tests help me fight back against the insanity. I can write code, cover it with tests, and trust those tests to be run by pipelines. With test coverage, I know that any future developer (myself included) will better understand the code since it comes with extra documentation in the form of tests. Plus, these tests will gently remind anyone if they've broken something they didn't know about. Once it's in place, this system keeps working without me.
+
+I feel like my organization has tried a few things that haven't worked and continues to default back to ways that worked before but threaten us at scale if we want to grow. Previously, we've tried top down mandates - two tests per sprint item. No one wanted to learn how to write tests, let alone change how they write code so it could even be tested in the first place. These days, our development department spends so much time writing code as quickly as we can, it seems like almost none of us are stopping to wonder why the next urgent fire is taking time away from the next urgent feature we're supposed to be shipping.
+
+Even knowing these things still doesn't always make it easy for me, but *The Phoenix Project* helps show what's really happening here. If we can elevate our software engineering practices, we can reduce the amount of unplanned work or rework that challenges our teams. This alone will reduce the stress of our developers. A few years ago, my manager told me about the Parable of the River. The idea of the parable is that we have the choice between doing everything we can to keep up with current demands or we can go upstream and solve problems at their source.
+
+## Where I am now
+
+I still haven't figured out how to solve these problems in my organization. I know a few of these practices have helped me be more effective in my position. Consequently, I have noticed whispers that I am the slowest worker in our department. Internally, I occasionally wrestle with whether these systems solely protect me from cleaning up other people's messes. *The DevOps Handbook* and systems theory give me solace here because software delivery is a team sport. Systems theory says focusing on individual throughput is suboptimization and counterintuitively reduces the performance of a system. While I'm still figuring all this out, I hope to keep learning and be willing to be wrong. I hope I can be a better software developer and be a part of a happier, more effective team.
